@@ -1,5 +1,6 @@
 #main-page {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -14,9 +15,22 @@
     width: 100%
 }
 
-
 .spot {
     height: 100px;
     width: 100px;
     border: 2px solid black
+}
+
+
+.dropper-button {
+    width: 100px;
+    height: 100px;
+}
+
+.red {
+    background-color: red;
+}
+
+.yellow {
+    background-color: yellow;
 }

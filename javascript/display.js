@@ -1,9 +1,9 @@
 export default class Display {
     constructor(board) {
-        this.board = board;
+        this.board = board.board;
         this.htmlBoard = this.buildHTMLBoard(document.getElementById('board'))
-        // console.log(this.htmlBoard)
     }
+
 
     buildHTMLBoard(boardDiv) {
         boardDiv.innerHTML = null;
@@ -20,9 +20,10 @@ export default class Display {
         return boardDiv
     }
 
+    
     renderHTML() {
         const htmlBoardNodes = Array.from(this.htmlBoard.childNodes).map(row => Array.from(row.childNodes))
-
+        console.log(this.board)
         this.board.forEach((row, i) => {
             row.forEach((spot, j) => {
                 let spotDiv = htmlBoardNodes[i][j]

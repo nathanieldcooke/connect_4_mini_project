@@ -1,21 +1,29 @@
+import Board from "./board.js";
 import Display from "./display.js";
+import PieceDropper from "./pieceDropper.js";
+
 
 class Game {
 
     constructor() {
-        this.board = this.buildBoard();
+        this.board = new Board();
         this.display = new Display(this.board)
-        // this.display.renderHTML()
-        // console.log(this.board)
+        this.currPlayer = 'yellow'
+        this.gameStart()
     }
 
-    buildBoard() {
-        const board = [];
-        for (let i = 0; i < 6; i++) {
-            board.push(new Array(7).fill(undefined, 0, 7));
-        }
-        return board;
+
+    gameStart() {
+        this.pieceDropper = new PieceDropper(this, this.makeMove)
     }
+
+
+    makeMove(idx) {
+        this.board.dropPiece(idx, this.currPlayer);
+        this.currPlayer = (this.currPlayer === 'yellow') ? 'red' : 'yellow';
+        this.display.renderHTML()
+    }
+
 }
 
 const newGmae = new Game;
