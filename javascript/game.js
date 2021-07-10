@@ -18,10 +18,11 @@ class Game {
     }
 
 
-    makeMove(idx) {
-        this.board.dropPiece(idx, this.currPlayer);
-        this.currPlayer = (this.currPlayer === 'yellow') ? 'red' : 'yellow';
+    makeMove(colIdx) {
+        let rowIdx = this.board.dropPiece(colIdx, this.currPlayer);
         this.display.renderHTML()
+        this.board.winner(rowIdx, colIdx, this.currPlayer)
+        this.currPlayer = (this.currPlayer === 'yellow') ? 'red' : 'yellow';
     }
 
 }
