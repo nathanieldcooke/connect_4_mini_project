@@ -1,8 +1,12 @@
+import Display from "./display.js";
 
 class Game {
+
     constructor() {
         this.board = this.buildBoard();
-        console.log(this.board)
+        this.display = new Display(this.board)
+        // this.display.renderHTML()
+        // console.log(this.board)
     }
 
     buildBoard() {
