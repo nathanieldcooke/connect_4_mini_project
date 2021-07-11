@@ -2,7 +2,7 @@ export default class PieceDropper {
     constructor(game, makeMove) {
         this.game = game
         this.makeMove = makeMove
-        this.dropperController = this.buildController(document.getElementById('pieceDropper'));
+        this.dropperController = this.buildController(document.getElementById('piece-dropper'));
     }
 
 

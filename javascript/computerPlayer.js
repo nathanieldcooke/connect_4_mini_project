@@ -6,14 +6,21 @@ export default class ComputerPlayer {
     }
 
     makeMove(game) {
-        // console.log(game.board.board)
+
         this.tree.buildTree(5, game.board.board)
         console.log(this.tree.root)
 
         let colIdx = this.tree.nextMove()
 
-        this.board.dropPiece(this.boardState, colIdx, 'red');
+        let rowIdx = this.board.dropPiece(this.boardState, colIdx, 'red');
 
+        let winner = this.board.winner(this.boardState, rowIdx, colIdx, 'red');
+        game.display.renderHTML()
+
+        if (winner) {
+            game.endGame()
+            return;
+        }
         game.currPlayer = 'yellow'
         game.playTurn()
     }
@@ -136,6 +143,7 @@ class Tree {
             }
         }
 
-        return 2;
+        let num = Math.floor(Math.random() * children.length);
+        return children[num].col;
     }
 }
