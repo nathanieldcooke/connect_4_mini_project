@@ -17,11 +17,12 @@ class Game {
 
     gameStart() {
         this.pieceDropper = new PieceDropper(this, this.makeMove)
-
         this.playTurn()
     }
 
     playTurn() {
+        console.log(this.currPlayer)
+        this.display.renderHTML()
         if (this.currPlayer === 'red') {
             // disable pieceDropper Controller
             // have computer make move
@@ -33,10 +34,10 @@ class Game {
 
     makeMove(colIdx) {
         let rowIdx = this.board.dropPiece(this.board.board, colIdx, this.currPlayer);
-        this.display.renderHTML()
-        console.log(this.board.winner(this.board.board, rowIdx, colIdx, this.currPlayer))
+        // this.display.renderHTML()
+        console.log(this.board.winner(this.board.board, rowIdx, colIdx, this.currPlayer));
         this.currPlayer = (this.currPlayer === 'yellow') ? 'red' : 'yellow';
-        this.playTurn()
+        this.playTurn();
     }
 
 }

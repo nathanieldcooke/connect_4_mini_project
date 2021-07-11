@@ -5,17 +5,27 @@ export default class ComputerPlayer {
         this.tree = new Tree(this.board);
     }
 
-    makeMove() {
-        this.tree.buildTree(7, this.boardState)
+    makeMove(game) {
+        // console.log(game.board.board)
+        this.tree.buildTree(5, game.board.board)
         console.log(this.tree.root)
+
+        let colIdx = this.tree.nextMove()
+
+        this.board.dropPiece(this.boardState, colIdx, 'red');
+
+        game.currPlayer = 'yellow'
+        game.playTurn()
     }
+
 }
 
 class Node {
 
-    constructor(boardState, val) {
+    constructor(boardState, val, col) {
         this.boardState = boardState // current boardState
         this.val = val // -1 = lose, 0 = neutral, 1 = win
+        this.col = col
         this.children = []  // every next move board permutaion
     }
 
@@ -30,7 +40,7 @@ class Tree {
 
 
     buildTree(depthLimit, boardState, currPlayer = 'red') {
-        this.root = new Node(boardState, 0);
+        this.root = new Node(boardState, 0, null);
 
         // loop to generate children;
         let nodes = [this.root];
@@ -69,17 +79,63 @@ class Tree {
                         moveVal = 0;
                     } 
                     // generate child node of root
-                    let childNode = new Node(boardStateDupe, moveVal)
+                    let childNode = new Node(boardStateDupe, moveVal, col)
                     currNode.children.push(childNode)
-                    childrenNodes.push(childNode)
+                    if (moveVal === 0) childrenNodes.push(childNode)
                 }
             }
             currPlayer = currPlayer === 'red' ? 'yellow' : 'red'
         }
     }
 
+
+    minimax(node, isMax = true) {
+        if (node.val === -1 || node.val === 1) return node.val;
+        
+        if (isMax) {
+            let maxEval = -Infinity;
+            node.children.forEach(child => {
+                let val = this.minimax(child, false);
+                maxEval = Math.max(maxEval, val);
+            });
+            return maxEval;
+        } else {
+            let minEval = Infinity;
+            node.children.forEach(child => {
+                let val = this.minimax(child, true);
+                minEval = Math.min(minEval, val);
+            });
+            return minEval;
+        }
+    }
+
     nextMove() {
-        //determine if next move(roots direct children) is going to be win
-        this.root.children.reduce
+
+        let children = this.root.children;
+        const winMoves = []
+        const loseMoves = []
+        const neutMoves = []
+
+
+        children.forEach(childNode => {
+            let valOfMove = this.minimax(childNode)
+            if (valOfMove === 1) winMoves.push(childNode.col)
+            if (valOfMove === -1) loseMoves.push(childNode.col)
+            if (valOfMove === 0) neutMoves.push(childNode.col) 
+        })
+
+        console.log('win: ', winMoves)
+        console.log('lose: ', loseMoves)
+        console.log('nu: ', neutMoves)
+
+        if (winMoves.length) {
+            return winMoves[0]
+        } else if (loseMoves.length) {
+            for (let i = 0; i < 7; i++) {
+                if (!loseMoves.includes(i)) return i;
+            }
+        }
+
+        return 2;
     }
 }
