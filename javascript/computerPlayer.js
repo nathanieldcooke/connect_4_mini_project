@@ -8,13 +8,13 @@ export default class ComputerPlayer {
     makeMove(game) {
 
         this.tree.buildTree(5, game.board.board)
-        console.log(this.tree.root)
 
         let colIdx = this.tree.nextMove()
 
         let rowIdx = this.board.dropPiece(this.boardState, colIdx, 'red');
 
         let winner = this.board.winner(this.boardState, rowIdx, colIdx, 'red');
+        
         game.display.renderHTML()
 
         if (winner) {
@@ -130,10 +130,6 @@ class Tree {
             if (valOfMove === -1) loseMoves.push(childNode.col)
             if (valOfMove === 0) neutMoves.push(childNode.col) 
         })
-
-        console.log('win: ', winMoves)
-        console.log('lose: ', loseMoves)
-        console.log('nu: ', neutMoves)
 
         if (winMoves.length) {
             return winMoves[0]

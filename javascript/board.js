@@ -42,9 +42,15 @@ export default class Board {
         const cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
         .reduce( (accu, spot) => {
             if (accu === 4) return 4;
-            if (spot === currPlayer) accu++;
-            return accu
+            if (spot === currPlayer) {
+                accu++;
+            } else {
+                accu = 0;
+            }
+            return accu;
         }, 0)
+
+        // console.log()
 
         return ( cnt4 === 4) ? true : false
     }
@@ -62,8 +68,12 @@ export default class Board {
         const cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
         .reduce((accu, spot) => {
             if (accu === 4) return 4;
-            if (spot === currPlayer) accu++;
-            return accu
+            if (spot === currPlayer) {
+                accu++;
+            } else {
+                accu = 0;
+            }
+            return accu;
         }, 0)
 
         return (cnt4 === 4) ? true : false
@@ -83,8 +93,12 @@ export default class Board {
         let cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
         .reduce((accu, spot) => {
             if (accu === 4) return 4;
-            if (spot === currPlayer) accu++;
-            return accu
+            if (spot === currPlayer) {
+                accu++;
+            } else {
+                accu = 0;
+            }
+            return accu;
         }, 0)
 
         if (cnt4 === 4) return true
@@ -100,8 +114,12 @@ export default class Board {
         cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
             .reduce((accu, spot) => {
                 if (accu === 4) return 4;
-                if (spot === currPlayer) accu++;
-                return accu
+                if (spot === currPlayer) {
+                    accu++;
+                } else {
+                    accu = 0;
+                }
+                return accu;
             }, 0)
 
         return (cnt4 === 4) ? true : false

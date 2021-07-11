@@ -59,7 +59,6 @@ class Game {
         '<div><span id="turn">Turn: <span id="hum-player">Human Player</span></span></div>'
         :
         '<div><span id="turn">Turn: <span id="com-player">Computer Player</span></span></div>';
-        console.log(status)
         this.statusDiv.innerHTML = status
     }
 
@@ -69,7 +68,6 @@ class Game {
             '<div><span id="turn">Winner: <span id="hum-player">Human Player</span></span></div>'
             :
             '<div><span id="turn">Winner: <span id="com-player">Computer Player</span></span></div>';
-        console.log(status)
         this.statusDiv.innerHTML = status
 
         let tryBtn = document.createElement('button')
