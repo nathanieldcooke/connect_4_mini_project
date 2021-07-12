@@ -31,7 +31,7 @@ class Game {
                 button.disabled = true
                 button.classList.remove('active')
             })
-            await new Promise(_r => setTimeout(_r, 2000));
+            // await new Promise(_r => setTimeout(_r, 2000));
             this.computerPlayer.makeMove(this)
         } else {
             this.dropperControllerArr.forEach((button, i) => {

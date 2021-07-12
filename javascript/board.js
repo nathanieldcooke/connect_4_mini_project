@@ -15,6 +15,7 @@ export default class Board {
 
 
     dropPiece(board, idx, currPlayer, row = 5) {
+        // console.log(`Row ${row}, Col ${idx}`)
         if (!board[row][idx]) {
             board[row][idx] = currPlayer
             return row
@@ -49,8 +50,6 @@ export default class Board {
             }
             return accu;
         }, 0)
-
-        // console.log()
 
         return ( cnt4 === 4) ? true : false
     }

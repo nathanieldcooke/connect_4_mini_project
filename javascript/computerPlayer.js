@@ -14,7 +14,7 @@ export default class ComputerPlayer {
         let rowIdx = this.board.dropPiece(this.boardState, colIdx, 'red');
 
         let winner = this.board.winner(this.boardState, rowIdx, colIdx, 'red');
-        
+
         game.display.renderHTML()
 
         if (winner) {
@@ -121,21 +121,24 @@ class Tree {
         let children = this.root.children;
         const winMoves = []
         const loseMoves = []
-        const neutMoves = []
+        const invalidMoves = []
 
 
         children.forEach(childNode => {
             let valOfMove = this.minimax(childNode)
             if (valOfMove === 1) winMoves.push(childNode.col)
             if (valOfMove === -1) loseMoves.push(childNode.col)
-            if (valOfMove === 0) neutMoves.push(childNode.col) 
         })
+
+        for (let i = 0; i < 7; i++) {
+            if (this.board.board[0][i]) invalidMoves.push(i)
+        }
 
         if (winMoves.length) {
             return winMoves[0]
         } else if (loseMoves.length) {
             for (let i = 0; i < 7; i++) {
-                if (!loseMoves.includes(i)) return i;
+                if (!loseMoves.includes(i) && !invalidMoves.includes(i)) return i;
             }
         }
 
