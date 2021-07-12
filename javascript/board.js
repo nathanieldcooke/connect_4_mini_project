@@ -15,7 +15,6 @@ export default class Board {
 
 
     dropPiece(board, idx, currPlayer, row = 5) {
-        // console.log(`Row ${row}, Col ${idx}`)
         if (!board[row][idx]) {
             board[row][idx] = currPlayer
             return row

@@ -62,7 +62,7 @@ table {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
 }
 
 #status-div {
@@ -107,7 +107,7 @@ table {
 
 #board {
     border: 2px solid black;
-    width: 700px;
+    /* width: 700px; */
     background-color: blue;
 }
 
@@ -117,8 +117,8 @@ table {
 }
 
 .spot {
-    height: 100px;
-    width: 100px;
+    height: 10vh;
+    width: 10vh;
     border: 2px solid black;
     border-radius: 50%;
     background-color: white;
@@ -126,8 +126,8 @@ table {
 
 
 .dropper-button {
-    width: 100px;
-    height: 100px;
+    width: 10vh;
+    height: 10vh;
     border-radius: 50%;
 }
 

@@ -24,18 +24,16 @@ class Game {
     }
 
     async playTurn() {
-        // console.log(this.currPlayer)
         this.updateTurn()
         if (this.currPlayer === 'red') {
             this.dropperControllerArr.forEach(button => {
                 button.disabled = true
                 button.classList.remove('active')
             })
-            // await new Promise(_r => setTimeout(_r, 2000));
+            await new Promise(_r => setTimeout(_r, 2000));
             this.computerPlayer.makeMove(this)
         } else {
             this.dropperControllerArr.forEach((button, i) => {
-                // console.log(this.board.board[0])
                 if (!this.board.board[0][i]) {
                     button.disabled = false
                     button.classList.add('active')
