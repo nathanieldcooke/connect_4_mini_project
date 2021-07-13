@@ -21,21 +21,30 @@ Having to work with trees on this project. I accomplished building a move tree, 
 
 `./javascript/computerPlayer.js`
 ```js
-buildTree(depthLimit, boardState, currPlayer = 'red') {
-        this.root = new Node(boardState, 0, null);
+// Generates next board states(next potential moves), of current root node;
+    buildTree(depthLimit, boardState, currPlayer = 'red') {
 
-        // loop to generate children;
+        this.root = new Node(boardState, 0, null); // current board state.
         let nodes = [this.root];
         let childrenNodes = [];
-        for (let j = depthLimit; j > 0; j--){
+
+        for (let j = depthLimit; j > 0; j--){ // limits the depth of the tree. **most computers can't calculate all potential moves
+
             nodes = nodes.concat(childrenNodes);
             childrenNodes = [];
-            while(nodes.length) {
+
+            while (nodes.length) { // will get next board state permutations, for nodes in the array.
+
                 let currNode = nodes.pop()
-                for (let i = 0; i < 7; i++) {
+
+                // There are 7 potential columns a token can be dropped into, 
+                // thus there are 7 potential next board state for any given currNode
+                // This loop will generate those states, by dropping a token in the respective columns,
+                // creating nodes from those potential next boards, and adding them to currNodes.children.
+                for (let i = 0; i < 7; i++) { 
                     let col = i;
         
-                    if (currNode.boardState[0][col]) continue;
+                    if (currNode.boardState[0][col]) continue; // check if column is filled with tokens, skip if it is full.
                     
                     // dupe board
                     let boardStateDupe = currNode.boardState.map(row => {
@@ -52,7 +61,6 @@ buildTree(depthLimit, boardState, currPlayer = 'red') {
                     // determine if next move is win, nuetral, or lose
                     let win = this.board.winner(boardStateDupe, row, col, currPlayer);
                     let moveVal = null;
-        
                     if (win && currPlayer === 'red') {
                         moveVal = 1;
                     } else if (win && currPlayer === 'yellow') {
@@ -60,15 +68,18 @@ buildTree(depthLimit, boardState, currPlayer = 'red') {
                     } else if (!win) {
                         moveVal = 0;
                     } 
+
                     // generate child node of root
                     let childNode = new Node(boardStateDupe, moveVal, col)
                     currNode.children.push(childNode)
                     if (moveVal === 0) childrenNodes.push(childNode)
                 }
             }
+
+            // After simulating all potential moves of currPlayer, change currPlayer for next set of potentail moves 
             currPlayer = currPlayer === 'red' ? 'yellow' : 'red'
         }
-    }Arr, passwordArr, confirmPasswordArr]);
+    }
 ```
 
 * Run MiniMax Algorithm on Move Tree nodes
