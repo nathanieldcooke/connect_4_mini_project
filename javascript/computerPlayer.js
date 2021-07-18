@@ -7,7 +7,7 @@ export default class ComputerPlayer {
 
     makeMove(game) {
 
-        this.tree.buildTree(5, game.board.board)
+        this.tree.buildTree(6, game.board.board)
 
         let colIdx = this.tree.nextMove()
 
@@ -107,53 +107,122 @@ class Tree {
     }
 
 
-    minimax(node, isMax = true) {
-        if (node.val === -1 || node.val === 1) return node.val;
-        
-        if (isMax) {
-            let maxEval = -Infinity;
-            node.children.forEach(child => {
-                let val = this.minimax(child, false);
-                maxEval = Math.max(maxEval, val);
-            });
-            return maxEval;
+    
+    // find shallowest next node that is end game state.
+    minimax(node, myTurn = false) {
+        // console.log(depth)
+        if (node.val === -1 || node.val === 1) return node;
+        if (node.children.length === 0) return node;
+
+        if (myTurn) {
+            return node.children.reduce((accu, child) => {
+                let testNode = this.minimax(child, false)
+                let score = Math.max(testNode.val, accu.val)
+                return (accu.val === score) ? accu : testNode
+            }, new Node(null, -Infinity, null))
         } else {
-            let minEval = Infinity;
-            node.children.forEach(child => {
-                let val = this.minimax(child, true);
-                minEval = Math.min(minEval, val);
-            });
-            return minEval;
+            return node.children.reduce((accu, child) => {
+                let testNode = this.minimax(child, true)
+                let score = Math.min(testNode.val, accu.val)
+                return (accu.val === score) ? accu : testNode
+            }, new Node(null, Infinity, null))
         }
     }
+
+    // find depth of node passed in. 
+    findNodeDepth(targetNode, node = this.root, depth = 1) {
+        if (node === targetNode) return depth
+
+        if (node.children.length) {
+            for (let i = 0; i < node.children.length; i++) {
+                let childNode = node.children[i];
+                let res = this.findNodeDepth(targetNode, childNode, depth + 1)
+                if (res) {
+                    return res
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     nextMove() {
 
         let children = this.root.children;
-        const winMoves = []
-        const loseMoves = []
+        
+        const winsObj = {
+            0: [],
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [],
+            6: [],
+            7: [],
+        }
+        
+        const loseObj = {
+            0: [],
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [],
+            6: [],
+            7: [],
+        }
+
+        const loseArr = []
+        
+        // determine which columns are already full, add to invalidMoves = []
         const invalidMoves = []
-
-
-        children.forEach(childNode => {
-            let valOfMove = this.minimax(childNode)
-            if (valOfMove === 1) winMoves.push(childNode.col)
-            if (valOfMove === -1) loseMoves.push(childNode.col)
-        })
-
         for (let i = 0; i < 7; i++) {
             if (this.board.board[0][i]) invalidMoves.push(i)
         }
 
-        if (winMoves.length) {
-            return winMoves[0]
-        } else if (loseMoves.length) {
-            for (let i = 0; i < 7; i++) {
-                if (!loseMoves.includes(i) && !invalidMoves.includes(i)) return i;
+
+        children.forEach(childNode => {
+            let node = this.minimax(childNode)
+            let depth = this.findNodeDepth(node)
+
+            let valOfMove = [node.val, depth]
+
+            if (valOfMove[0] === 1) winsObj[valOfMove[1]].push(childNode.col)
+
+            if (valOfMove[0] === -1) {
+                loseObj[valOfMove[1]].push(childNode.col)
+                loseArr.push(childNode.col)
+            }
+            
+        })
+
+        // will return win that is shortest amount of turns
+        for (let i = 0; i < 8; i++) {
+            let winsArr = winsObj[i] 
+            if (winsArr.length) {
+                return winsArr[0];
             }
         }
 
-        let num = Math.floor(Math.random() * children.length);
-        return children[num].col;
+        // will pick a non-losing and non-invalid move.
+        const potMoves = []
+        for (let i = 0; i < 7; i++) {
+            if (!loseArr.includes(i) && !invalidMoves.includes(i)) {
+                potMoves.push(i)
+            }
+            // return i; // randomize
+        }
+        if (potMoves.length) return potMoves[Math.floor(Math.random() * potMoves.length)]
+
+        // will pick losing move that is most moves away, hopefully human does not see thier win
+        for (let i = 7; i > -1; i--) {
+            let loseArr = loseObj[i]
+            if (loseArr.length) {
+                return loseArr[0];
+            }
+        }
+    
     }
-}
+
+} 
