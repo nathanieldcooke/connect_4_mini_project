@@ -11,9 +11,9 @@ export default class ComputerPlayer {
 
         let colIdx = this.tree.nextMove()
 
-        let rowIdx = this.board.dropPiece(this.boardState, colIdx, 'red');
+        let rowIdx = this.board.dropPiece(this.boardState, colIdx, 'RR');
 
-        let winner = this.board.winner(this.boardState, rowIdx, colIdx, 'red');
+        let winner = this.board.winner(this.boardState, rowIdx, colIdx, 'RR');
 
         game.display.renderHTML()
 
@@ -21,7 +21,7 @@ export default class ComputerPlayer {
             game.endGame()
             return;
         }
-        game.currPlayer = 'yellow'
+        game.currPlayer = 'YY'
         game.playTurn()
     }
 
@@ -47,7 +47,7 @@ class Tree {
 
 
     // Generates next board states(next potential moves), of current root node;
-    buildTree(depthLimit, boardState, currPlayer = 'red') {
+    buildTree(depthLimit, boardState, currPlayer = 'RR') {
 
         this.root = new Node(boardState, 0, null); // current board state.
         let nodes = [this.root];
@@ -86,9 +86,9 @@ class Tree {
                     // determine if next move is win, nuetral, or lose
                     let win = this.board.winner(boardStateDupe, row, col, currPlayer);
                     let moveVal = null;
-                    if (win && currPlayer === 'red') {
+                    if (win && currPlayer === 'RR') {
                         moveVal = 1;
-                    } else if (win && currPlayer === 'yellow') {
+                    } else if (win && currPlayer === 'YY') {
                         moveVal = -1;
                     } else if (!win) {
                         moveVal = 0;
@@ -102,7 +102,7 @@ class Tree {
             }
 
             // After simulating all potential moves of currPlayer, change currPlayer for next set of potentail moves 
-            currPlayer = currPlayer === 'red' ? 'yellow' : 'red'
+            currPlayer = currPlayer === 'RR' ? 'YY' : 'RR'
         }
     }
 
@@ -110,34 +110,46 @@ class Tree {
     
     // find shallowest next node that is end game state.
     minimax(node, myTurn = false) {
-        // console.log(depth)
-        if (node.val === -1 || node.val === 1) return node;
-        if (node.children.length === 0) return node;
+        if (node.val === -1 || node.val === 1 || !node.children.length) return node;
 
         if (myTurn) {
             return node.children.reduce((accu, child) => {
                 let testNode = this.minimax(child, false)
                 let score = Math.max(testNode.val, accu.val)
+                if ((testNode.val === accu.val === 1)) {
+                    if (this.findNodeDepth(testNode) > this.findNodeDepth(accu)) {
+                        return accu
+                    } else {
+                        return testNode
+                    }
+                }
                 return (accu.val === score) ? accu : testNode
             }, new Node(null, -Infinity, null))
         } else {
             return node.children.reduce((accu, child) => {
                 let testNode = this.minimax(child, true)
                 let score = Math.min(testNode.val, accu.val)
+                if ((testNode.val === accu.val === -1)) {
+                    if (this.findNodeDepth(testNode) > this.findNodeDepth(accu)) {
+                        return accu
+                    } else {
+                        return testNode
+                    }
+                }
                 return (accu.val === score) ? accu : testNode
             }, new Node(null, Infinity, null))
         }
     }
 
     // find depth of node passed in. 
-    findNodeDepth(targetNode, node = this.root, depth = 1) {
+    findNodeDepth(targetNode, node = this.root, depth = 0) {
         if (node === targetNode) return depth
 
         if (node.children.length) {
             for (let i = 0; i < node.children.length; i++) {
                 let childNode = node.children[i];
                 let res = this.findNodeDepth(targetNode, childNode, depth + 1)
-                if (res) {
+                if (typeof res === 'number') {
                     return res
                 }
             }
@@ -181,11 +193,12 @@ class Tree {
             if (this.board.board[0][i]) invalidMoves.push(i)
         }
 
-
+        console.log('=======================================')
         children.forEach(childNode => {
             let node = this.minimax(childNode)
             let depth = this.findNodeDepth(node)
 
+            console.log(`Node ${childNode.col}: `, node)
             let valOfMove = [node.val, depth]
 
             if (valOfMove[0] === 1) winsObj[valOfMove[1]].push(childNode.col)
@@ -197,10 +210,17 @@ class Tree {
             
         })
 
+        console.log('Root: ', this.root)
+        console.log('Wins: ', winsObj)
+        console.log('Lose: ', loseObj)
+
+
+
         // will return win that is shortest amount of turns
         for (let i = 0; i < 8; i++) {
             let winsArr = winsObj[i] 
             if (winsArr.length) {
+                console.log('Win Move: ', winsArr[0])
                 return winsArr[0];
             }
         }
@@ -213,12 +233,17 @@ class Tree {
             }
             // return i; // randomize
         }
-        if (potMoves.length) return potMoves[Math.floor(Math.random() * potMoves.length)]
+        if (potMoves.length) {
+            let move = potMoves[Math.floor(Math.random() * potMoves.length)]
+            console.log('Reg Move: ', move)
+            return move
+        }
 
         // will pick losing move that is most moves away, hopefully human does not see thier win
-        for (let i = 7; i > -1; i--) {
+        for (let i = 0; i < 8; i++) {
             let loseArr = loseObj[i]
             if (loseArr.length) {
+                console.log('Lose Move: ', loseArr[0])
                 return loseArr[0];
             }
         }

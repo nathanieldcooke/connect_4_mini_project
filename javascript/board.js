@@ -8,7 +8,7 @@ export default class Board {
     buildBoard() {
         const board = [];
         for (let i = 0; i < 6; i++) {
-            board.push(new Array(7).fill(undefined, 0, 7));
+            board.push(new Array(7).fill(null, 0, 7));
         }
         return board;
     }
@@ -55,13 +55,13 @@ export default class Board {
 
 
     colWin(board, row, col, currPlayer) {
-        let spot0 = board[row - 3] ? board[row - 3][col] : undefined
-        let spot1 = board[row - 2] ? board[row - 2][col] : undefined
-        let spot2 = board[row - 1] ? board[row - 1][col] : undefined
-        let spot3 = board[row - 0] ? board[row - 0][col] : undefined
-        let spot4 = board[row + 1] ? board[row + 1][col] : undefined
-        let spot5 = board[row + 2] ? board[row + 2][col] : undefined
-        let spot6 = board[row + 3] ? board[row + 3][col] : undefined
+        let spot0 = board[row - 3] ? board[row - 3][col] : null
+        let spot1 = board[row - 2] ? board[row - 2][col] : null
+        let spot2 = board[row - 1] ? board[row - 1][col] : null
+        let spot3 = board[row - 0] ? board[row - 0][col] : null
+        let spot4 = board[row + 1] ? board[row + 1][col] : null
+        let spot5 = board[row + 2] ? board[row + 2][col] : null
+        let spot6 = board[row + 3] ? board[row + 3][col] : null
 
         const cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
         .reduce((accu, spot) => {
@@ -80,13 +80,13 @@ export default class Board {
 
     diagWin(board, row, col, currPlayer) {
 
-        let spot0 = board[row - 3] ? board[row - 3][col - 3] : undefined
-        let spot1 = board[row - 2] ? board[row - 2][col - 2] : undefined
-        let spot2 = board[row - 1] ? board[row - 1][col - 1] : undefined
-        let spot3 = board[row - 0] ? board[row - 0][col] : undefined
-        let spot4 = board[row + 1] ? board[row + 1][col + 1] : undefined
-        let spot5 = board[row + 2] ? board[row + 2][col + 2] : undefined
-        let spot6 = board[row + 3] ? board[row + 3][col + 3] : undefined
+        let spot0 = board[row - 3] ? board[row - 3][col - 3] : null
+        let spot1 = board[row - 2] ? board[row - 2][col - 2] : null
+        let spot2 = board[row - 1] ? board[row - 1][col - 1] : null
+        let spot3 = board[row - 0] ? board[row - 0][col] : null
+        let spot4 = board[row + 1] ? board[row + 1][col + 1] : null
+        let spot5 = board[row + 2] ? board[row + 2][col + 2] : null
+        let spot6 = board[row + 3] ? board[row + 3][col + 3] : null
 
         let cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
         .reduce((accu, spot) => {
@@ -101,13 +101,13 @@ export default class Board {
 
         if (cnt4 === 4) return true
 
-        spot0 = board[row - 3] ? board[row - 3][col + 3] : undefined
-        spot1 = board[row - 2] ? board[row - 2][col + 2] : undefined
-        spot2 = board[row - 1] ? board[row - 1][col + 1] : undefined
-        spot3 = board[row - 0] ? board[row - 0][col] : undefined
-        spot4 = board[row + 1] ? board[row + 1][col - 1] : undefined
-        spot5 = board[row + 2] ? board[row + 2][col - 2] : undefined
-        spot6 = board[row + 3] ? board[row + 3][col - 3] : undefined
+        spot0 = board[row - 3] ? board[row - 3][col + 3] : null
+        spot1 = board[row - 2] ? board[row - 2][col + 2] : null
+        spot2 = board[row - 1] ? board[row - 1][col + 1] : null
+        spot3 = board[row - 0] ? board[row - 0][col] : null
+        spot4 = board[row + 1] ? board[row + 1][col - 1] : null
+        spot5 = board[row + 2] ? board[row + 2][col - 2] : null
+        spot6 = board[row + 3] ? board[row + 3][col - 3] : null
 
         cnt4 = [spot0, spot1, spot2, spot3, spot4, spot5, spot6]
             .reduce((accu, spot) => {
