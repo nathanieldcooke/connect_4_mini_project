@@ -22,7 +22,7 @@ Having to work with trees on this project. I accomplished building a move tree, 
 `./javascript/computerPlayer.js`
 ```js
 // Generates next board states(next potential moves), of current root node;
-    buildTree(depthLimit, boardState, currPlayer = 'red') {
+    buildTree(depthLimit, boardState, currPlayer = 'RR') {
 
         this.root = new Node(boardState, 0, null); // current board state.
         let nodes = [this.root];
@@ -61,9 +61,9 @@ Having to work with trees on this project. I accomplished building a move tree, 
                     // determine if next move is win, nuetral, or lose
                     let win = this.board.winner(boardStateDupe, row, col, currPlayer);
                     let moveVal = null;
-                    if (win && currPlayer === 'red') {
+                    if (win && currPlayer === 'RR') {
                         moveVal = 1;
-                    } else if (win && currPlayer === 'yellow') {
+                    } else if (win && currPlayer === 'YY') {
                         moveVal = -1;
                     } else if (!win) {
                         moveVal = 0;
@@ -77,7 +77,7 @@ Having to work with trees on this project. I accomplished building a move tree, 
             }
 
             // After simulating all potential moves of currPlayer, change currPlayer for next set of potentail moves 
-            currPlayer = currPlayer === 'red' ? 'yellow' : 'red'
+            currPlayer = currPlayer === 'RR' ? 'YY' : 'RR'
         }
     }
 ```

@@ -27,9 +27,9 @@ export default class Display {
             row.forEach((spot, j) => {
                 let spotDiv = htmlBoardNodes[i][j]
                 if (spot) {
-                    if (spot === 'red') {
+                    if (spot === 'RR') {
                         spotDiv.className = ('spot red')
-                    } else if (spot === 'yellow') {
+                    } else if (spot === 'YY') {
                         spotDiv.className = ('spot yellow')
                     }
                 } 

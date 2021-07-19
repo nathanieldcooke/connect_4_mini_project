@@ -10,7 +10,7 @@ class Game {
         this.board = new Board();
         this.computerPlayer = new ComputerPlayer(this.board);
         this.display = new Display(this.board)
-        this.currPlayer = 'yellow'
+        this.currPlayer = 'YY'
         this.startButton = document.getElementById('start')
         this.statusDiv = document.getElementById('status-div')
         this.startButton.addEventListener('click', this.gameStart.bind(this)) 
@@ -25,12 +25,12 @@ class Game {
 
     async playTurn() {
         this.updateTurn()
-        if (this.currPlayer === 'red') {
+        if (this.currPlayer === 'RR') {
             this.dropperControllerArr.forEach(button => {
                 button.disabled = true
                 button.classList.remove('active')
             })
-            await new Promise(_r => setTimeout(_r, 2000));
+            // await new Promise(_r => setTimeout(_r, 2000));
             this.computerPlayer.makeMove(this)
         } else {
             this.dropperControllerArr.forEach((button, i) => {
@@ -50,12 +50,12 @@ class Game {
             this.endGame()
             return;
         }
-        this.currPlayer = (this.currPlayer === 'yellow') ? 'red' : 'yellow';
+        this.currPlayer = (this.currPlayer === 'YY') ? 'RR' : 'YY';
         this.playTurn();
     }
 
     updateTurn() {
-        let status = this.currPlayer === 'yellow' 
+        let status = this.currPlayer === 'YY' 
         ?
         '<div><span id="turn">Turn: <span id="hum-player">Human Player</span></span></div>'
         :
@@ -64,7 +64,7 @@ class Game {
     }
 
     endGame() {
-        let status = this.currPlayer === 'yellow'
+        let status = this.currPlayer === 'YY'
             ?
             '<div><span id="turn">Winner: <span id="hum-player">Human Player</span></span></div>'
             :
@@ -87,7 +87,7 @@ class Game {
         this.board = new Board();
         this.computerPlayer = new ComputerPlayer(this.board);
         this.display = new Display(this.board)
-        this.currPlayer = 'yellow'
+        this.currPlayer = 'YY'
         this.startButton = document.getElementById('start')
         this.statusDiv = document.getElementById('status-div')
         document.getElementById('piece-dropper').innerHTML = ''
