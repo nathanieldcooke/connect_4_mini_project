@@ -116,7 +116,7 @@ class Tree {
             return node.children.reduce((accu, child) => {
                 let testNode = this.minimax(child, false)
                 let score = Math.max(testNode.val, accu.val)
-                if ((testNode.val === accu.val === 1)) {
+                if ((testNode.val === accu.val === -1 || testNode.val === accu.val === 1)) {
                     if (this.findNodeDepth(testNode) > this.findNodeDepth(accu)) {
                         return accu
                     } else {
@@ -129,7 +129,7 @@ class Tree {
             return node.children.reduce((accu, child) => {
                 let testNode = this.minimax(child, true)
                 let score = Math.min(testNode.val, accu.val)
-                if ((testNode.val === accu.val === -1)) {
+                if ((testNode.val === accu.val === 1 || testNode.val === accu.val === -1)) {
                     if (this.findNodeDepth(testNode) > this.findNodeDepth(accu)) {
                         return accu
                     } else {
@@ -193,7 +193,7 @@ class Tree {
             if (this.board.board[0][i]) invalidMoves.push(i)
         }
 
-        console.log('=======================================')
+        // console.log('=======================================')
         children.forEach(childNode => {
             let node = this.minimax(childNode)
             let depth = this.findNodeDepth(node)

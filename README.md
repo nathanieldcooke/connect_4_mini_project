@@ -88,24 +88,53 @@ Having to work with trees on this project. I accomplished building a move tree, 
 
 `./javascript/computerPlayer.js`
 ```js
-    minimax(node, isMax = true) {
-        if (node.val === -1 || node.val === 1) return node.val;
-        
-        if (isMax) {
-            let maxEval = -Infinity;
-            node.children.forEach(child => {
-                let val = this.minimax(child, false);
-                maxEval = Math.max(maxEval, val);
-            });
-            return maxEval;
+    minimax(node, myTurn = false) {
+        if (node.val === -1 || node.val === 1 || !node.children.length) return node;
+
+        if (myTurn) {
+            return node.children.reduce((accu, child) => {
+                let testNode = this.minimax(child, false)
+                let score = Math.max(testNode.val, accu.val)
+                if ((testNode.val === accu.val === -1 || testNode.val === accu.val === 1)) {
+                    if (this.findNodeDepth(testNode) > this.findNodeDepth(accu)) {
+                        return accu
+                    } else {
+                        return testNode
+                    }
+                }
+                return (accu.val === score) ? accu : testNode
+            }, new Node(null, -Infinity, null))
         } else {
-            let minEval = Infinity;
-            node.children.forEach(child => {
-                let val = this.minimax(child, true);
-                minEval = Math.min(minEval, val);
-            });
-            return minEval;
+            return node.children.reduce((accu, child) => {
+                let testNode = this.minimax(child, true)
+                let score = Math.min(testNode.val, accu.val)
+                if ((testNode.val === accu.val === 1 || testNode.val === accu.val === -1)) {
+                    if (this.findNodeDepth(testNode) > this.findNodeDepth(accu)) {
+                        return accu
+                    } else {
+                        return testNode
+                    }
+                }
+                return (accu.val === score) ? accu : testNode
+            }, new Node(null, Infinity, null))
         }
+    }
+
+    // find depth of node passed in. 
+    findNodeDepth(targetNode, node = this.root, depth = 0) {
+        if (node === targetNode) return depth
+
+        if (node.children.length) {
+            for (let i = 0; i < node.children.length; i++) {
+                let childNode = node.children[i];
+                let res = this.findNodeDepth(targetNode, childNode, depth + 1)
+                if (typeof res === 'number') {
+                    return res
+                }
+            }
+        }
+
+        return false;
     }
 ```
 
